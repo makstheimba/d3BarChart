@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+}
+body, html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+body {
+    background: radial-gradient(white, #eee);
+    background-size: 50px 50px;
+    margin: 0 20%;
+    display: flex;
+}
+section {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    background: white;
+    margin: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 5px;
+    flex-grow: 1;
+}
+.chart {
+    flex-grow: 1;
+    display: flex;
+    max-height: 500px;
+    align-items: flex-end;
+    height: calc(100% - 28px);
+}
+
+.chart-data {
+    background-color: lightblue;
+    flex-grow: 1;
+}
+
+@media(max-width: 720px) {
+    body {
+        margin: 0;
+    }
+}
