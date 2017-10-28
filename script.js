@@ -7,20 +7,22 @@ const fetchGrossData = () => fetch(
 
 async function startApp() {
 	const grossData = await fetchGrossData();
-	const grossBarHeight = 100 / grossData.data.length;
-	const grossBarHeightPercentage = `${grossBarHeight}%`;
-	const grossValueScale = d3.scaleLinear()
+	const yScale = d3.scaleLinear()
 		.domain([0, d3.max(grossData.data, ([date, value]) => value)])
-		.range([0, 100])
+	const xScale = d3.scaleBand()
+		.domain(grossData.data.map(([date]) => date))
+		.range([0, 1])
+	const formatter = d3.format(".2%");
 
 	d3.select('.chart')
 		.selectAll('rect')
 		.data(grossData.data)
 			.enter()
 			.append('rect')
-			.attr('width', ([date, value]) => `${grossValueScale(value)}%`)
-			.attr('height', grossBarHeightPercentage)
-			.attr('y', (entry, index) => `${index * grossBarHeight}%`)
+			.attr('width', formatter(xScale.bandwidth()))
+			.attr('height', ([date, value]) => formatter(yScale(value)))
+			.attr('x', ([date]) => formatter(xScale(date)))
+			.attr('y', ([date, value]) => formatter(1 - yScale(value)))
 }
 
 window.onload = startApp;
