@@ -4,14 +4,18 @@ const fetchGrossData = () => fetch(
 	.then(res => res.json())
 	.catch(alert);
 
-
 async function startApp() {
-	const chart = d3.select('.chart');
-	const margin = {top: 30, right: 0, bottom: 0, left: 30};
-	const width = parseInt(chart.style('width'), 10) - margin.left - margin.right;
-	const height = parseInt(chart.style('height'), 10) - margin.top - margin.bottom;
+	const margin = {top: 10, left: 10, bottom: 20, right: 30};
+	const viewBoxWidth = 1000;
+	const viewBoxHeight = 400;
+	const width = viewBoxWidth - margin.left - margin.right;
+	const height = viewBoxHeight - margin.top - margin.bottom;
 	const yScale = d3.scaleLinear().range([height, 0]);
 	const xScale = d3.scaleBand().range([0, width]);
+	const chart = d3.select('.chart')
+		.attr('viewBox', `0 0 ${viewBoxWidth} ${viewBoxHeight}`)
+		.append('g')
+		.attr('transform', `translate(${margin.left}, ${margin.top})`);
 	const grossData = await fetchGrossData();
 
 	yScale.domain([0, d3.max(grossData.data, ([date, value]) => value)]);
@@ -20,7 +24,7 @@ async function startApp() {
 	const xAxis = d3.axisBottom()
 		.scale(xScale)
 		.tickValues(grossData.data
-			.filter((val, index) => index !== 0 && index % 20 === 0)
+			.filter((val, index) => index % 20 === 0)
 			.map(([date]) => date)
 		).tickFormat(date => date.split('-')[0]);
 	const yAxis = d3.axisRight()
