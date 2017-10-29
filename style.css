@@ -6,8 +6,6 @@ body, html {
 body {
     margin: 0 20%;
     display: flex;
-    background-size: 50px 50px;
-    background: radial-gradient(white, #eee);
 }
 
 section {
@@ -31,6 +29,15 @@ section {
 
 .chart rect {
     fill: lightblue;
+}
+
+.chart rect:hover {
+    fill: seagreen;
+}
+
+.axis path,
+.axis line {
+    shape-rendering: crispEdges;
 }
 
 @media(max-width: 720px) {
